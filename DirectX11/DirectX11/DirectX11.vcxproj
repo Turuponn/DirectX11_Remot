@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{A9DFFDA4-AB98-4D75-B07A-A6B24558BC9F}</ProjectGuid>
+    <RootNamespace>DirectX11</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(FBX_DIR)\include;$(ProjectDir)\Assimp\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir);$(FBX_DIR)\lib\vs2015\x64\debug;$(ProjectDir)\MicrosoftLiblary\lib;$(ProjectDir)\Assimp\Assimp\lib;$(ProjectDir)\Assimp\Assimp\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera\CameraManager.cpp" />
+    <ClCompile Include="D3D11Manager\D3D11DeviceAndSwapChainAndContext\D3D11DeviceAndSwapChainAndContextManager.cpp" />
+    <ClCompile Include="D3D11Manager\DepthStencil\DepthStencilManager.cpp" />
+    <ClCompile Include="D3D11Manager\FBX\FBXLoaderManager.cpp" />
+    <ClCompile Include="D3D11Manager\IndexBuffer\IndexBufferManager.cpp" />
+    <ClCompile Include="D3D11Manager\ObjLoaderManager\ObjLoaderManager.cpp" />
+    <ClCompile Include="D3D11Manager\Rasterizer\RasterizerManager.cpp" />
+    <ClCompile Include="D3D11Manager\RenderTarget\RenderTargetManager.cpp" />
+    <ClCompile Include="D3D11Manager\Shada\Constant\ConstantManager.cpp" />
+    <ClCompile Include="D3D11Manager\Shada\InputLayout\InputLayoutManager.cpp" />
+    <ClCompile Include="D3D11Manager\Shada\PS\PixelShadaManager.cpp" />
+    <ClCompile Include="D3D11Manager\Shada\VS\VertexShadaManager.cpp" />
+    <ClCompile Include="D3D11Manager\TextureSampler\TextureSamplerManager.cpp" />
+    <ClCompile Include="D3D11Manager\Texture\WICTextureLoderManager.cpp" />
+    <ClCompile Include="D3D11Manager\VertexBuffer\VertexBufferManager.cpp" />
+    <ClCompile Include="D3D11Manager\ViewPort\ViewPort.cpp" />
+    <ClCompile Include="D3D11\D3D11DeviceAndSwapChainAndContext\D3D11DeviceAndSwapChainAndContext.cpp" />
+    <ClCompile Include="D3D11\DepthStencil\DepthStencil.cpp" />
+    <ClCompile Include="D3D11\IndexBuffer\IndexBuffer.cpp" />
+    <ClCompile Include="D3D11\RenderTarget\RenderTarget.cpp" />
+    <ClCompile Include="D3D11\Shada\Constant\ConstantBufferCreate.cpp" />
+    <ClCompile Include="D3D11\Shada\InputLayout\CreateInputLayout.cpp" />
+    <ClCompile Include="D3D11\Shada\PS\PixelShada.cpp" />
+    <ClCompile Include="D3D11\Shada\VS\VertexShada.cpp" />
+    <ClCompile Include="D3D11\TextureSampler\TextureSampler.cpp" />
+    <ClCompile Include="D3D11\VertexBuffer\VertexBufferCreate.cpp" />
+    <ClCompile Include="D3D11\WICTextureLoaderCreate\WICTextureLoaderCreate.cpp" />
+    <ClCompile Include="GameEngine\GameEngine.cpp" />
+    <ClCompile Include="GameLevel\GameLevel.cpp" />
+    <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Loader\FBX\FBXLoader.cpp" />
+    <ClCompile Include="Loader\ObjLoader.cpp" />
+    <ClCompile Include="MicrosoftLiblary\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="Primitiv\Plane\Plane.cpp" />
+    <ClCompile Include="Winmain.cpp" />
+    <ClCompile Include="WinManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera\CameraManager.h" />
+    <ClInclude Include="constance.h" />
+    <ClInclude Include="D3D11Manager\D3D11DeviceAndSwapChainAndContext\D3D11DeviceAndSwapChainAndContextManager.h" />
+    <ClInclude Include="D3D11Manager\DepthStencil\DepthStencilManager.h" />
+    <ClInclude Include="D3D11Manager\FBX\FBXLoaderManager.h" />
+    <ClInclude Include="D3D11Manager\IndexBuffer\IndexBufferManager.h" />
+    <ClInclude Include="D3D11Manager\ObjLoaderManager\ObjLoaderManager.h" />
+    <ClInclude Include="D3D11Manager\Rasterizer\RasterizerManager.h" />
+    <ClInclude Include="D3D11Manager\RenderTarget\RenderTargetManager.h" />
+    <ClInclude Include="D3D11Manager\Shada\Constant\ConstantManager.h" />
+    <ClInclude Include="D3D11Manager\Shada\InputLayout\InputLayoutManager.h" />
+    <ClInclude Include="D3D11Manager\Shada\PS\PixelShadaManager.h" />
+    <ClInclude Include="D3D11Manager\Shada\VS\VertexShadaManager.h" />
+    <ClInclude Include="D3D11Manager\TextureSampler\TextureSamplerManager.h" />
+    <ClInclude Include="D3D11Manager\Texture\WICTextureLoderManager.h" />
+    <ClInclude Include="D3D11Manager\VertexBuffer\VertexBufferManager.h" />
+    <ClInclude Include="D3D11Manager\ViewPort\ViewPort.h" />
+    <ClInclude Include="D3D11\D3D11DeviceAndSwapChainAndContext\D3D11DeviceAndSwapChainAndContext.h" />
+    <ClInclude Include="D3D11\DepthStencil\DepthStencil.h" />
+    <ClInclude Include="D3D11\IndexBuffer\IndexBuffer.h" />
+    <ClInclude Include="D3D11\RenderTarget\RenderTarget.h" />
+    <ClInclude Include="D3D11\Shada\Constant\ConstantBufferCreate.h" />
+    <ClInclude Include="D3D11\Shada\InputLayout\CreateInputLayout.h" />
+    <ClInclude Include="D3D11\Shada\PS\PixelShada.h" />
+    <ClInclude Include="D3D11\Shada\VS\VertexShada.h" />
+    <ClInclude Include="D3D11\TextureSampler\TextureSampler.h" />
+    <ClInclude Include="D3D11\VertexBuffer\VertexBufferCreate.h" />
+    <ClInclude Include="D3D11\WICTextureLoaderCreate\WICTextureLoaderCreate.h" />
+    <ClInclude Include="GameEngine\GameEngine.h" />
+    <ClInclude Include="GameLevel\GameLevel.h" />
+    <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Loader\FBX\FBXLoader.h" />
+    <ClInclude Include="Loader\ObjLoader.h" />
+    <ClInclude Include="MicrosoftLiblary\WICTextureLoader\DirectXTex.h" />
+    <ClInclude Include="MicrosoftLiblary\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="Primitiv\Plane\Plane.h" />
+    <ClInclude Include="Primitiv\PrimitivProperty.h" />
+    <ClInclude Include="WinManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MicrosoftLiblary\WICTextureLoader\DirectXTex.inl" />
+    <None Include="resoce\Shada\Assimp\AssimpHeader.hlsli" />
+    <None Include="resoce\Shada\Camera\Camera.hlsli" />
+    <None Include="resoce\Shada\FBX\FBXHeader.hlsli" />
+    <None Include="resoce\Shada\Primitiv\PrimitivGlobal.hlsli" />
+    <None Include="resoce\Shada\TextureSmpler\TextureSmpler.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resoce\Shada\Assimp\PS\AssimpPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AssimpPS</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="resoce\Shada\Assimp\VS\AssimpVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AssimpVS</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="resoce\Shada\FBX\PS\FBXPixelShader.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">FbxPS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="resoce\Shada\FBX\VS\FBXVertexShader.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">FbxVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="resoce\Shada\Primitiv\PS\PrimitivPS.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BasicPS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="resoce\Shada\Primitiv\VS\PrimitivVS.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BasicVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
