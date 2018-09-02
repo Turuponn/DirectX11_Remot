@@ -6,7 +6,7 @@ int mainCameraHandle = 0;
 int tree_handle = 0;
 int modelhandle = 0;
 
-const std::string filepath_fbx = "resoce/Pencil/Pencel5_Hierarky.fbx";
+const std::string filepath_fbx = "resoce/Cube/Test3Cube.fbx";
 
 GameLevel::GameLevel() {
 }

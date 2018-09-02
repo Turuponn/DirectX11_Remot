@@ -8,8 +8,8 @@ float4 FbxPS(OutputFbxModel o) : SV_Target
 	float diffese = dot(o.normal, lightdir);//ƒ‰ƒ“ƒo[ƒg
 
 
-	float4 color = tex.Sample(texsampler, o.uv);
+	float color = diffese;
 	
 
-	return float4(color.x, color.y, color.z, 1);
+	return float4(color, color, color, 1);
 }

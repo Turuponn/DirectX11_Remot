@@ -25,14 +25,7 @@ const char* shadafuncname_PS = "BasicPS";
 const TCHAR* texFilepath = _T("resoce/Texture/81y8fpUAp2L._SL1500_.jpg");
 
 
-////頂点を定義
-//PrimitivVertex vertices[] =
-//{
-//	DirectX::XMFLOAT3(-5.5f,-5.5f,0),//頂点1	
-//	DirectX::XMFLOAT3(-5.5f,5.5f,0), //頂点2
-//	DirectX::XMFLOAT3(5.5f,-5.5f,0.0f),  //頂点3
-//	DirectX::XMFLOAT3(5.5f,5.5f,0),
-//};
+
 
 
 //頂点レイアウト: TODO:　共通とするなら見えるように作るべき
@@ -114,10 +107,10 @@ void Plane::LoadTexture(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager
 void Plane::CreateVertex(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device) {
 
 	//頂点定義 
-	_primitiv_vertexList.push_back(PrimitivVertex(-500.0f, -10.2f, 500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
-	_primitiv_vertexList.push_back(PrimitivVertex(500.0f, -10.2f, 500.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
-	_primitiv_vertexList.push_back(PrimitivVertex(-500.0f, -10.2f, -500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
-	_primitiv_vertexList.push_back(PrimitivVertex(500.0f, -10.2f, -500.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f));
+	_primitiv_vertexList.push_back(PrimitivVertex(-500.0f, -50.2f, 500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+	_primitiv_vertexList.push_back(PrimitivVertex(500.0f, -50.2f, 500.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
+	_primitiv_vertexList.push_back(PrimitivVertex(-500.0f, -50.2f, -500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
+	_primitiv_vertexList.push_back(PrimitivVertex(500.0f, -50.2f, -500.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f));
 
 	std::shared_ptr<VertexBufferManager> vm(new VertexBufferManager());
 	_vertexbuffermanager = vm;

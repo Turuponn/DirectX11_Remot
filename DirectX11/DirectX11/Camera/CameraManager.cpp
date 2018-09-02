@@ -18,7 +18,7 @@ CameraManager::~CameraManager() {
 void CameraManager::CreateCamera(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device) {
 
 	//行列作成
-	_eye = { 0.0,0.4f,-0.4f };//視点ベクトル　左手系
+	_eye = { 0.0,10.8f,-10.8f };//視点ベクトル　左手系
 	DirectX::XMVECTOR target = { 0,0,0 };//ターゲット:焦点
 	DirectX::XMVECTOR upper_vec = { 0, 1, 0 };//アッパーベクトル
 	_camera = DirectX::XMMatrixLookAtLH(_eye, target, upper_vec);

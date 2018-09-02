@@ -1,5 +1,10 @@
 
 
+cbuffer fbx:register(b1) {
+	float4 diffusecolor;
+	float4 ambientcolor;
+	float4 specularcolor;
+}
 
 //FBXópèoóÕ
 struct OutputFbxModel {
