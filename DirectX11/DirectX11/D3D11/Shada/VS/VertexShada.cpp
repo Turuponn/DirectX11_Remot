@@ -43,6 +43,5 @@ void VertexShada::CreateVertexShada(const TCHAR* filenamepath, const char* funcn
 		SAFE_RELEASE((*compileshada));
 		throw(1);
 	}
-	//頂点レイアウトでコンパイルシェーダはつかう
 	
 }

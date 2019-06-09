@@ -20,12 +20,10 @@ void VertexBufferCreate::CreateVertexBuffer(ID3D11Device*& device, const int& bu
 	bd.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData = {};
-	InitData.pSysMem = vertexdata;//生データを入れる(なにか必ずデータが必要。バッファサイズを先に作ることは不可能かと思われる)
+	InitData.pSysMem = vertexdata;
 	result = device->CreateBuffer(&bd, &InitData, vertexbuffer);
 	if (result != S_OK) {
 		throw(1);
 	}
 
-
-	//TODO: 頂点はMap,Unmapが必要　後で作る
 }

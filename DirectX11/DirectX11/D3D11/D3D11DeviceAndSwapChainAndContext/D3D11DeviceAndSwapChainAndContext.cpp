@@ -37,8 +37,6 @@ void D3D11DeviceAndSwapChainAndContext::CreateDeviceAndSwapChainAndContext(WinHW
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;//出力がウィンドウ モードの場合は TRUE それ以外の場合は FALSE
 
-
-	//二度手間だがswapchain単体は作れない？
 	result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, swapchain, device, &fLevel, context);
 
 	if (result != S_OK) {

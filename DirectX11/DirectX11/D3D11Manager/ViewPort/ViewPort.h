@@ -9,7 +9,7 @@ public:
 	virtual ~ViewPort();
 
 	/**
-	@brief ビューポートを設定するだけ
+	@brief ビューポートを設定
 	*/
 	void ViewPortInit(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device);
 

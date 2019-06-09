@@ -60,7 +60,6 @@ void Graphics::Render(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>&
 }
 
 void Graphics::ScreenFlip(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device) {
-	
-	//‚±‚ê‚ÍƒQ[ƒ€‘¤‚Ås‚¤
+
 	device->GetSwapChain()->Present(0, 0);
 }

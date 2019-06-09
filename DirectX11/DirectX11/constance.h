@@ -2,11 +2,6 @@
 
 #include <tchar.h>
 
-//// winnt.hで必要(普段はwindows.hが定義している)
-//#include <windef.h>     // 基本的な定義類
-//#include <stdarg.h>     // winbase.hに必要
-//#include <winbase.h>    // 他の各種API向けヘッダに必要そう
-//#include <winnt.h>      // windef, winbaseで足りない分(実はwindefが内部でincludeしてる)
 
 
 //==============================================

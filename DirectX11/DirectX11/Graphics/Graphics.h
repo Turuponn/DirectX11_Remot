@@ -1,8 +1,5 @@
 #pragma once
 
-/*
-ƒŒƒ“ƒ_ƒŠƒ“ƒO–½—ßŠÖŒW
-*/
 
 
 #include <memory>

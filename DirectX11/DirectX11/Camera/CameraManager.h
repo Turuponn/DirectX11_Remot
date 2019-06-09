@@ -7,8 +7,8 @@
 
 //シーン用定数
 __declspec(align(16)) struct SCENE_MATRIX {
-	DirectX::XMMATRIX world;//ワールド行列
-	DirectX::XMMATRIX viewproje;//ビュープロジェクション行列
+	DirectX::XMMATRIX world;
+	DirectX::XMMATRIX viewproje;
 };
 
 
@@ -59,7 +59,7 @@ public:
 
 
 private:
-	DirectX::XMMATRIX _viewProj;//ビュー影行列: まだなんなのかわかってないけど
+	DirectX::XMMATRIX _viewProj;//ビュー影行列
 	DirectX::XMMATRIX _camera;//カメラ行列
 	DirectX::XMMATRIX _projection;//射影行列
 	DirectX::XMVECTOR _eye;//視線ベクトル

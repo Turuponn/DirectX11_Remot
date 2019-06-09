@@ -44,7 +44,6 @@ private:
 	std::shared_ptr<VertexShadaManager> _vsshada;
 	std::shared_ptr<PixelShadaManager> _psshada;
 	std::shared_ptr<InputLayoutManager> _inputlayoutManager;
-	//!textureManager : マテリアル等で使用するようにできるかもしれない
 	std::shared_ptr<WICTextureLoderManager> _textureManager;
 	std::shared_ptr<TextureSamplerManager> _texSamplerManager;
 	

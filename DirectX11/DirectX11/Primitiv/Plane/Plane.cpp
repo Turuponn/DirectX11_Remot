@@ -21,23 +21,19 @@ const TCHAR* shadafilepath_PS = _T("resoce/Shada/Primitiv/PS/PrimitivPS.hlsl");
 const char* shadafuncname_PS = "BasicPS";
 
 
-//Test texturePath
 const TCHAR* texFilepath = _T("resoce/Texture/81y8fpUAp2L._SL1500_.jpg");
 
 
 
-
-
-//頂点レイアウト: TODO:　共通とするなら見えるように作るべき
 D3D11_INPUT_ELEMENT_DESC vertex_layout[] =
 {
 	{ 
 		"POSITION",
 		0,
-		DXGI_FORMAT_R32G32B32_FLOAT,//あー Aも含めるとおかしなる
+		DXGI_FORMAT_R32G32B32_FLOAT,
 		0,
 		0,
-		D3D11_INPUT_PER_VERTEX_DATA,//頂点単位として
+		D3D11_INPUT_PER_VERTEX_DATA,
 		0
 	},
 	{
@@ -45,7 +41,7 @@ D3D11_INPUT_ELEMENT_DESC vertex_layout[] =
 		0,
 		DXGI_FORMAT_R32G32B32_FLOAT,
 		0,
-		D3D11_APPEND_ALIGNED_ELEMENT,//追加
+		D3D11_APPEND_ALIGNED_ELEMENT,
 		D3D11_INPUT_PER_VERTEX_DATA,
 		0
     },
@@ -54,7 +50,7 @@ D3D11_INPUT_ELEMENT_DESC vertex_layout[] =
 		0,
 		DXGI_FORMAT_R32G32_FLOAT,
 		0,
-		D3D11_APPEND_ALIGNED_ELEMENT,//追加
+		D3D11_APPEND_ALIGNED_ELEMENT,
 		D3D11_INPUT_PER_VERTEX_DATA,
 		0
 	},
@@ -63,7 +59,7 @@ D3D11_INPUT_ELEMENT_DESC vertex_layout[] =
 		0,
 		DXGI_FORMAT_R32G32B32A32_FLOAT,
 		0,
-		D3D11_APPEND_ALIGNED_ELEMENT,//追加
+		D3D11_APPEND_ALIGNED_ELEMENT,
 		D3D11_INPUT_PER_VERTEX_DATA,
 		0
 	},
@@ -85,7 +81,7 @@ void Plane::CreatePlane(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager
 	CreateVertex(device);
 	//シェーダ作成
 	CreateShada(device);
-	//TODO: テクスチャをロードする(マテリアルとしてつくることになる　3Dならの話だが)
+	//テクスチャをロードします
 	LoadTexture(device);
 	
 }
@@ -116,7 +112,7 @@ void Plane::CreateVertex(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManage
 	_vertexbuffermanager = vm;
 	_vertexbuffermanager->CreateVertexBuffer(
 		device,
-		static_cast<void*>(_primitiv_vertexList.data()),//Note: 外人がいうにはemptyチェックが必要な(void*)法よりいいらしいdataがそのチェックもかねてくれるらしい
+		static_cast<void*>(_primitiv_vertexList.data()),
 		sizeof(PrimitivVertex),
 		_primitiv_vertexList.size()
 	);
@@ -146,13 +142,9 @@ void Plane::CreateShada(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager
 }
 
 void Plane::DrawModel(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device, std::shared_ptr<ConstantManager>& cameraCManager) {
-	
-
-	////使用するシェーダーの登録
 	device->GetDeviceContext()->VSSetShader(_vsshada->GetVertexShada(), nullptr, 0);
 	device->GetDeviceContext()->PSSetShader(_psshada->GetPSShada(), nullptr, 0);
-	//コンスタントバッファーを、どのシェーダーで使うかを指定：定数そのものが必要Dx12とは違う
-	device->GetDeviceContext()->VSSetConstantBuffers(0, 1, &cameraCManager->GetCbuff());//TODO: ここのスロットはルートシグネチャリスペクトにしよう
+	device->GetDeviceContext()->VSSetConstantBuffers(0, 1, &cameraCManager->GetCbuff());
 	device->GetDeviceContext()->PSSetConstantBuffers(0, 1, &cameraCManager->GetCbuff());
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(PrimitivVertex);

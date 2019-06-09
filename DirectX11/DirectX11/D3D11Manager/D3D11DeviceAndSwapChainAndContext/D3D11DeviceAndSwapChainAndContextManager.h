@@ -43,6 +43,6 @@ public:
 
 private:
 	ID3D11Device* _device;
-	ID3D11DeviceContext* _context;//コンテキスト D12ではコマンドのようなもの
+	ID3D11DeviceContext* _context;
 	IDXGISwapChain* _swapchain;
 };

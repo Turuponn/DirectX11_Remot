@@ -22,7 +22,7 @@ void ConstantManager::CreateConstant(std::shared_ptr<D3D11DeviceAndSwapChainAndC
 void ConstantManager::ConstantMap(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device, D3D11_MAPPED_SUBRESOURCE* address) {
 	HRESULT result = E_FAIL;
 	result = device->GetDeviceContext()->Map(_constantbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, address);//定数バッファに間接的にアクセスするためにaddressを関連付ける
-	//Unmapは後々編集することも考えて今はしない->このせいで重くなる？
+
 	if (result != S_OK) {
 		throw(1);
 	}

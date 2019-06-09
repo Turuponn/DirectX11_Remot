@@ -24,8 +24,6 @@ void CameraManager::CreateCamera(std::shared_ptr<D3D11DeviceAndSwapChainAndConte
 	_camera = DirectX::XMMatrixLookAtLH(_eye, target, upper_vec);
 	_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, static_cast<float>(SCREENSIZE_X) / static_cast<float>(SCREENSIZE_Y), 0.1f, 5000.0f);
 	_viewProj = _camera*_projection;
-	
-	//定数を作成、今後こいつをシーン用変換行列としてつかう(Unityのような感じ)
 	CreateConstant(device);
 }
 
@@ -36,7 +34,7 @@ void CameraManager::CreateConstant(std::shared_ptr<D3D11DeviceAndSwapChainAndCon
 	_address = new D3D11_MAPPED_SUBRESOURCE();
 	_constant->ConstantMap(device, _address);
 	_scenecameramat.viewproje = _viewProj;
-	_scenecameramat.world = DirectX::XMMatrixRotationY(DirectX::XM_PIDIV4);//TODO:とりあえずこれ設定
+	_scenecameramat.world = DirectX::XMMatrixRotationY(DirectX::XM_PIDIV4);
 	//バッファに書き込み
 	memcpy_s(
 		_address->pData,
@@ -53,7 +51,7 @@ void CameraManager::Update(std::shared_ptr<D3D11DeviceAndSwapChainAndContextMana
 	counter = counter + 0.0001f;
 	newmat.world = DirectX::XMMatrixRotationY(counter);
 	newmat.viewproje = _scenecameramat.viewproje;
-	*(SCENE_MATRIX*)_address->pData = newmat;//これでも動的に変更できるらしい
+	*(SCENE_MATRIX*)_address->pData = newmat;
 	_constant->ConstantUnMap(device);
 }
 

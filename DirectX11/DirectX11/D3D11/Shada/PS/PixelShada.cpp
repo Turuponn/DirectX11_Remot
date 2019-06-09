@@ -28,7 +28,6 @@ void PixelShada::CreatePixelShada(const TCHAR* filenamepath, const char* funcnam
 		&error
 	);
 	if (result != S_OK) {
-		// エラーメッセージを出力.
 		if (error != NULL){
 			OutputDebugStringA((char*)error->GetBufferPointer());
 		}

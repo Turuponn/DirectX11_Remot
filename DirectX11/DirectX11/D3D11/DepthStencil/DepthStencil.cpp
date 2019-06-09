@@ -26,7 +26,6 @@ void DepthStencil::CreateDepthStencil(ID3D11Device*& device, ID3D11DepthStencilV
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 
-	//ID3D11Texture2D* depthstencilTex = nullptr;
 	result = device->CreateTexture2D(&descDepth, nullptr, &depthstencilTex);
 	if (result != S_OK) {
 		throw(1);

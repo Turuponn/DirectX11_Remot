@@ -110,35 +110,27 @@ bool FBXLoader::InitializeSdkObjects()
 	return true;
 }
 
-//	FBXファイルの読み込み 
 bool FBXLoader::Load(const std::string& _pName, std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device)
 {
 	_fbxfilepath = _pName;
 	printf("\n");
 	int sFileFormat = -1;
 
-	// FBX SDK オブジェクトの初期化。 
 	InitializeSdkObjects();
 
-	// インポータ作成。 
 	m_pFbxImporter = FbxImporter::Create(m_pFbxManager, "Importer");
 	if (!m_pFbxImporter)
 	{
-		FBXSDK_printf("Error: Unable to create FBX importer!\n");
 		return false;
 	}
-
-	// ファイルを指定したインポート(リーダー)ファイル形式で検出します。 
+	//ファイル形式が合わない場合の処理
 	if (!m_pFbxManager->GetIOPluginRegistry()->DetectReaderFileFormat(_pName.c_str(), sFileFormat))
 	{
-		// 検出できないファイル形式です。 FbxImporter::eFBX_BINARY 形式でトライします。 
 		sFileFormat = m_pFbxManager->GetIOPluginRegistry()->FindReaderIDByDescription("FBX binary (*.fbx)");
 	}
-
-	// FBXファイルを読み込む。 
+	//FBXファイルを読み込みます
 	if (!m_pFbxImporter->Initialize(_pName.c_str(), sFileFormat))
 	{
-		FBXSDK_printf("Error: Unable to create FBX initialize!\n");
 		return false;
 	}
 
@@ -179,61 +171,26 @@ bool FBXLoader::Load(const std::string& _pName, std::shared_ptr<D3D11DeviceAndSw
 	//頂点データ作成
 	LoadVertexData(device);
 
-
-
-	//定数系初期化
-	//TODO: 色をインデックスと一緒にする必要があるため　マテリアルごとに必要
-	std::shared_ptr<ConstantManager> constant(new ConstantManager());
-	//constant->CreateConstant(device, sizeof(FBXCBUFF));
-	//_cbuffaddress = new D3D11_MAPPED_SUBRESOURCE();
-	//constant->ConstantMap(device, _cbuffaddress);
-	//
-	//memcpy_s(
-	//	_cbuffaddress->pData,
-	//	_cbuffaddress->RowPitch,
-	//	(void*)(&_scenecameramat),//データ部
-	//	sizeof(_scenecameramat)//サイズ部
-	//);
-	//constant->ConstantUnMap(device);
-	
+	return true;
 }
 
 void FBXLoader::LoadVertexData(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device) {
 
-	//BlenderのFBXは頂点インデックスベース？
-
-	
 	int meshcount = 0;
 	_rigidbodyMeshnum = m_pFbxScene->GetRootNode()->GetChildCount();
-	printf("剛体数: %d  \n", _rigidbodyMeshnum);
 	// 頂点データの取り出し
-	for (int i = 0; i < m_pFbxScene->GetRootNode()->GetChildCount(); i++) {//子までノードを巡る : 剛体が複数ある場合その数分まわるっぽい
+	for (int i = 0; i < m_pFbxScene->GetRootNode()->GetChildCount(); i++) {
 		if (m_pFbxScene->GetRootNode()->GetChild(i)->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eMesh) {
 			std::vector<VERTEX> v;
 			auto mesh = m_pFbxScene->GetRootNode()->GetChild(i)->GetMesh();
 			auto meshnode = m_pFbxScene->GetRootNode()->GetChild(i);
 			++meshcount;
-
-			
-			
 			VertexDataImport(mesh, v);
 			if (v.size() <= 0) {
-				printf("FBX: empty mesh!   %d番目 \n", meshcount);
 				return;
 			}
-
-			//スキニング用データロード
-			//LoadSkinAnim(_meshNode);
-
 			//頂点バッファ作成
 			CreateVertexBuffer(mesh, device, v);
-			
-
-
-			
-			//マテリアル情報取り出し
-			/*_material.resize(meshcount);
-			_indexbuffers.resize(meshcount);*/
 			MaterialData(mesh, device, meshcount);
 		}
 	}
@@ -248,208 +205,15 @@ void FBXLoader::LoadTexture(const std::string& filepath, std::shared_ptr<D3D11De
 }
 const std::string FBXLoader::TexturePath(const std::string& filepath) {
 	std::string workpath = filepath;
-	auto lastpath = filepath.substr(0, filepath.find_last_of('\\') + 1);//最後に現れる指定文字までの場所
-	workpath.erase(0, lastpath.size());//中身を編集
-
-	//パス化する
+	auto lastpath = filepath.substr(0, filepath.find_last_of('\\') + 1);
+	workpath.erase(0, lastpath.size());
 	auto lastpathfbx = _fbxfilepath.substr(0, _fbxfilepath.find_last_of('/') + 1);
 	if (lastpathfbx.size() < 1) {
-		printf("fbx指定ファイルパスが無効\n");
 		throw(1);
 	}
 	workpath = lastpathfbx + workpath;
 	printf("LoadTexture: %s\n", workpath.c_str());
 	return workpath;
-}
-void FBXLoader::LoadSkinAnim(FbxNode* mesh) {
-
-	// ----- Animation -----
-	/*timeCount += FrameTime;
-	if (timeCount > stop) timeCount = start;*/
-
-	FbxSkin* skinDeformer = nullptr;
-	skinDeformer = (FbxSkin *)mesh->GetMesh()->GetDeformer(0, FbxDeformer::eSkin);
-	if (skinDeformer == nullptr) {
-		printf("FBX:  Not Animation Loader\n");
-		return;
-	}
-	if (mesh->GetMesh() == nullptr) {
-		throw(1);
-	}
-
-	// 移動、回転、拡大のための行列を作成
-	FbxMatrix globalPosition = mesh->EvaluateGlobalTransform(0);
-	FbxVector4 t0 = mesh->GetGeometricTranslation(FbxNode::eSourcePivot);
-	FbxVector4 r0 = mesh->GetGeometricRotation(FbxNode::eSourcePivot);
-	FbxVector4 s0 = mesh->GetGeometricScaling(FbxNode::eSourcePivot);
-	FbxAMatrix geometryOffset = FbxAMatrix(t0, r0, s0);
-
-	
-	// 各頂点に掛けるための最終的な行列の配列
-	FbxMatrix *clusterDeformation = new FbxMatrix[mesh->GetMesh()->GetControlPointsCount()];
-	memset(clusterDeformation, 0, sizeof(FbxMatrix) * mesh->GetMesh()->GetControlPointsCount());
-
-
-
-	int clusterCount = skinDeformer->GetClusterCount();
-	// 各クラスタから各頂点に影響を与えるための行列作成
-	for (int clusterIndex = 0; clusterIndex < clusterCount; clusterIndex++) {
-		// クラスタ(ボーン)の取り出し
-		FbxCluster *cluster = skinDeformer->GetCluster(clusterIndex);
-		FbxMatrix vertexTransformMatrix;
-		FbxAMatrix referenceGlobalInitPosition;
-		FbxAMatrix clusterGlobalInitPosition;
-		FbxMatrix clusterGlobalCurrentPosition;
-		FbxMatrix clusterRelativeInitPosition;
-		FbxMatrix clusterRelativeCurrentPositionInverse;
-		cluster->GetTransformMatrix(referenceGlobalInitPosition);
-		referenceGlobalInitPosition *= geometryOffset;
-		cluster->GetTransformLinkMatrix(clusterGlobalInitPosition);
-		clusterGlobalCurrentPosition = cluster->GetLink()->EvaluateGlobalTransform(0);
-		clusterRelativeInitPosition = clusterGlobalInitPosition.Inverse() * referenceGlobalInitPosition;
-		clusterRelativeCurrentPositionInverse = globalPosition.Inverse() * clusterGlobalCurrentPosition;
-		vertexTransformMatrix = clusterRelativeCurrentPositionInverse * clusterRelativeInitPosition;
-		// 上で作った行列に各頂点毎の影響度(重み)を掛けてそれぞれに加算
-		for (int i = 0; i < cluster->GetControlPointIndicesCount(); i++) {
-			int index = cluster->GetControlPointIndices()[i];
-			double weight = cluster->GetControlPointWeights()[i];
-			FbxMatrix influence = vertexTransformMatrix * weight;
-			clusterDeformation[index] += influence;
-		}
-	}
-
-	//// 最終的な頂点座標を計算しVERTEXに変換
-	//for (int i = 0; i < mesh->GetControlPointsCount(); i++) {
-	//	FbxVector4 outVertex = clusterDeformation[i].MultNormalize(mesh->GetControlPointAt(i));
-	//	vertices2[i].Pos.x = (FLOAT)outVertex[0];
-	//	vertices2[i].Pos.y = (FLOAT)outVertex[1];
-	//	vertices2[i].Pos.z = (FLOAT)outVertex[2];
-	//}
-
-
-	////FBXから抽出すべき情報は、頂点ごとのボーンインデックス、頂点ごとのボーンウェイト、バインド行列、ポーズ行列　の4項目
-	//int uvnum = meshNode->GetMesh()->GetTextureUVCount();
-	//int facenum = meshNode->GetMesh()->GetPolygonCount();
-	//auto vertexnum = meshNode->GetMesh()->GetControlPointsCount();
-
-	//int i, k;
-	//int iNumBone = 0;//ボーン数
-
-	////デフォーマーを得る 
-	//FbxDeformer* pDeformer = meshNode->GetMesh()->GetDeformer(0);
-	//FbxSkin* pSkinInfo = static_cast<FbxSkin*>(pDeformer);
-	////
-	////ボーンを得る
-	//iNumBone = pSkinInfo->GetClusterCount();
-	//m_ppCluster = new  FbxCluster*[iNumBone];
-	//for (i = 0; i < iNumBone; i++)
-	//{
-	//	m_ppCluster[i] = pSkinInfo->GetCluster(i);
-	//}
-
-	////通常の場合　（頂点数＞=UV数　pvVBが頂点インデックスベースの場合）
-	//if (vertexnum >= uvnum)
-	//{
-	//	//それぞれのボーンに影響を受ける頂点を調べる　そこから逆に、頂点ベースでボーンインデックス・重みを整頓する
-	//	for (i = 0; i < iNumBone; i++)
-	//	{
-	//		int iNumIndex = m_ppCluster[i]->GetControlPointIndicesCount();//このボーンに影響を受ける頂点数
-	//		int* piIndex = m_ppCluster[i]->GetControlPointIndices();
-	//		double* pdWeight = m_ppCluster[i]->GetControlPointWeights();
-	//		//頂点側からインデックスをたどって、頂点サイドで整理する
-	//		for (k = 0; k < iNumIndex; k++)
-	//		{
-	//			for (int m = 0; m < 4; m++)//FBXやCGソフトがボーン4本以内とは限らない。5本以上の場合は、重みの大きい順に4本に絞る 
-	//			{
-	//				if (pdWeight[k] > pvVB[piIndex[k]].boneIndex[m])
-	//				{
-	//					pvVB[piIndex[k]].boneIndex[m] = i;
-	//					pvVB[piIndex[k]].boneWeight[m] = pdWeight[k];
-	//					break;
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	////UVインデックスベースの場合　（頂点数<UV数）
-	//else
-	//{
-	//	int PolyIndex = 0;
-	//	int UVIndex = 0;
-	//	//それぞれのボーンに影響を受ける頂点を調べる　そこから逆に、頂点ベースでボーンインデックス・重みを整頓する
-	//	for (i = 0; i < iNumBone; i++)
-	//	{
-	//		int iNumIndex = m_ppCluster[i]->GetControlPointIndicesCount();//このボーンに影響を受ける頂点数
-	//		int* piIndex = m_ppCluster[i]->GetControlPointIndices();
-	//		double* pdWeight = m_ppCluster[i]->GetControlPointWeights();
-	//		//頂点側からインデックスをたどって、頂点サイドで整理する
-	//		for (k = 0; k < iNumIndex; k++)
-	//		{
-	//			//その頂点を含んでいるポリゴンすべてに、このボーンとウェイトを適用
-	//			for (int p = 0; p < PolyTable[piIndex[k]].NumRef; p++)
-	//			{
-	//				//頂点→属すポリゴン→そのポリゴンのUVインデックス　と逆引き
-	//				PolyIndex = PolyTable[piIndex[k]].PolyIndex[p];
-	//				UVIndex = meshNode->GetMesh()->GetTextureUVIndex(PolyIndex, PolyTable[piIndex[k]].Index123[p], FbxLayerElement::eTextureDiffuse);
-
-	//				for (int m = 0; m < 4; m++)//FBXやCGソフトがボーン4本以内とは限らない。5本以上の場合は、重みの大きい順に4本に絞る 
-	//				{
-	//					if (pdWeight[k] > pvVB[UVIndex].boneWeight[m])
-	//					{
-	//						pvVB[UVIndex].boneIndex[m] = i;
-	//						pvVB[UVIndex].boneWeight[m] = pdWeight[k];
-	//						break;
-	//					}
-	//				}
-	//			}
-
-	//		}
-	//	}
-	//}
-
-	//
-	////ボーンを生成
-	//// ジョイントの変換行列の取得
-	//m_iNumBone = iNumBone;
-	//m_BoneArray = new BONE[iNumBone];
-	//std::vector<XMMATRIX> matrixs;
-
-	//std::vector<float> matArry;//要素を分解して連続したメモリにアタッチする
-	//for (int bonenumidx = 0; bonenumidx<m_iNumBone; bonenumidx++){
-	//	FbxAMatrix mat;
-	//	m_ppCluster[bonenumidx]->GetTransformLinkMatrix(mat);
-	//	for (int row = 0; row<4; row++)
-	//	{
-	//		for (int col = 0; col<4; col++)
-	//		{
-	//			matArry.push_back(mat.Get(row, col));
-	//		}
-	//	}
-	//}
-
-	////行列にする
-	//int j = 0;
-	//for (int i = 0; i < m_iNumBone; i++) {
-	//	XMMATRIX mat(
-	//		matArry[0], matArry[1], matArry[2], matArry[3],
-	//		matArry[4], matArry[5] * -1, matArry[6], matArry[7],
-	//		matArry[8], matArry[9], matArry[10], matArry[11],
-	//		matArry[12], matArry[13], matArry[14], matArry[15]
-	//	);
-	//	matrixs.push_back(mat);
-	//		
-	//}
-	//
-
-
-	
-}
-
-	
-
-
-void FBXLoader::InitSkinAnim() {
-
 }
 void FBXLoader::MaterialData(FbxMesh*& meshdata,std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device, int meshcount) {
 	
@@ -520,8 +284,6 @@ void FBXLoader::MaterialData(FbxMesh*& meshdata,std::shared_ptr<D3D11DeviceAndSw
 				if (texture) {
 					std::string texfilepath = texture->GetRelativeFileName();//テクスチャ名ではなくテクスチャファイル名を取得する
 					LoadTexture(TexturePath(texfilepath), device);
-					//UVセット名も保持：TODO:　よくわからないので後回し
-					//std::string UVSetName = texture->UVSet.Get().Buffer();	
 				}
 			}
 		}
@@ -679,7 +441,7 @@ void FBXLoader::NormalData(FbxMesh*& meshdata,int faceidx,int idx0, int idx1, in
 			continue;
 		}
 
-		if (NormalMapping == FbxGeometryElement::eByPolygonVertex && NormalReference == FbxGeometryElement::eDirect) {//生データのまま入っている
+		if (NormalMapping == FbxGeometryElement::eByPolygonVertex && NormalReference == FbxGeometryElement::eDirect) {//生データ
 			fbxsdk::FbxVector4 normalvec;
 			meshdata->GetPolygonVertexNormal(faceidx, 0, normalvec);
 			vertexdata[idx0].normal.x = -normalvec[0];//FBXは右手座標系
@@ -702,32 +464,19 @@ void FBXLoader::NormalData(FbxMesh*& meshdata,int faceidx,int idx0, int idx1, in
 
 
 void FBXLoader::Render(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>& device, std::shared_ptr<TextureSamplerManager>& texsmpler) {
-
-
-	//インデックスとマテリアルは別で保存すべきか？
-	//やはりインデックスを違うメッシュのインデックスを使って居たっぽい
-
-	//メッシュにしては数が多すぎる
 	for (int meshidx = 0; meshidx < _vertexbuffers.size(); meshidx++) {
-
-
-
-		//バーテックスバッファーをセット
 		UINT stride = sizeof(VERTEX);
 		UINT offset = 0;
 		device->GetDeviceContext()->IASetVertexBuffers(0, 1, &_vertexbuffers[meshidx], &stride, &offset);
-
-
-		//マテリアルループ
 		for (int materialidx = 0; materialidx < _material[meshidx].size(); materialidx++)
 		{
 			device->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			//使用されていないマテリアル対策
+			//使用されていないマテリアルの場合スキップします
 			if (_material[meshidx][materialidx].fecenum == 0)
 			{
 				continue;
 			}
-			//インデックスバッファーをセット
+			//インデックスバッファー
 			stride = sizeof(int);
 			offset = 0;
 			device->GetDeviceContext()->IASetIndexBuffer(_indexbuffers[meshidx][materialidx], DXGI_FORMAT_R32_UINT, 0);
@@ -737,7 +486,6 @@ void FBXLoader::Render(std::shared_ptr<D3D11DeviceAndSwapChainAndContextManager>
 				device->GetDeviceContext()->PSSetShaderResources(0, 1, &_textures[materialidx]->GetTexView());
 
 			}
-
 			//Draw
 			device->GetDeviceContext()->DrawIndexed(_material[meshidx][materialidx].fecenum, 0, 0);
 

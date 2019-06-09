@@ -31,7 +31,7 @@ public:
 	/**
 	* @brief 定数バッファを返す
 	* @return 
-	* @Note Dx12ではバッファを返さなくてもルートシグネチャで完結してた。　Dx11ではどの定数を使うのか毎フレーム必要
+	* @Note 
 	*/
 	ID3D11Buffer*& GetCbuff();
 

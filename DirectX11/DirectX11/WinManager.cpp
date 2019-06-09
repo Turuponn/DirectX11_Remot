@@ -17,7 +17,7 @@ WinManager::~WinManager() {
 
 void WinManager::create() {
 
-	if (mInstance != nullptr) {//存在した場合
+	if (mInstance != nullptr) {
 		
 	}
 
@@ -32,7 +32,6 @@ WinManager* WinManager::Instance() {
 	create();
 	return mInstance;
 }
-//初期化
 void WinManager::Initialize(const TCHAR* classname, const unsigned int& screensizeX, const unsigned int& screensizeY) {
 	Instance();
 	mInstance->WindowInit(classname,screensizeX,screensizeY);
@@ -44,19 +43,17 @@ void WinManager::Initialize(const TCHAR* classname, const unsigned int& screensi
 }
 //メインループ
 void WinManager::Run() {
-	GameLevel* _gamelevel = new GameLevel();//scenemanager
+	GameLevel* _gamelevel = new GameLevel();
 
 	_gamelevel->Init(mInstance->_hwnd);
 
-	//メインループ
-	//注意:ループは早い
 	MSG msg = {};
 	while (true) {//基本無限ループ
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {//OSから投げられてるメッセージをmsgに格納 hwndが必要、ウインドウ情報が必要らしいので
-			TranslateMessage(&msg);//仮想キー関連の交換
-			DispatchMessage(&msg);//処理されなかったメッセージをOSに投げ返す
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 		}
-		if (msg.message == WM_QUIT) {//もうアプリケーションが終わる
+		if (msg.message == WM_QUIT) {
 			break;
 		}
 

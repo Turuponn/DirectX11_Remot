@@ -1,15 +1,10 @@
 #pragma once
 
 
-/*
-Propertyで 所有物って意味にしてますが
-*/
 
 #include <DirectXMath.h>
 
 
-//1頂点の情報
-//IAに送る用
 struct PrimitivVertex {
 	//IAステージ用のセマンティクスレイアウト
 	DirectX::XMFLOAT3 pos;
@@ -27,7 +22,7 @@ struct PrimitivVertex {
 	}
 
 	PrimitivVertex(DirectX::XMFLOAT3& p, DirectX::XMFLOAT3& norm, DirectX::XMFLOAT2& coord) {
-		pos = p;//こうてんかな
+		pos = p;
 		normal = norm;
 		uv = coord;
 	}
@@ -43,8 +38,6 @@ struct PrimitivVertex {
 	}
 };
 
-
-//primitiv用定数
 struct PrimitivConstant {
-	DirectX::XMMATRIX wvp;//ワールドビュープロジェクション行列
+	DirectX::XMMATRIX wvp;
 };

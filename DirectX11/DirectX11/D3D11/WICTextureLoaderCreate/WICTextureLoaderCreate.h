@@ -1,9 +1,6 @@
 #pragma once
 
 
-/*
-* @Note WICをつかったテクスチャローダーを作る
-*/
 
 #include <memory>
 #include <string>

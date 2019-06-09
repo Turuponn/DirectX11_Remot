@@ -4,11 +4,10 @@
 #include "WinManager.h"
 #include "Primitiv\Plane\Plane.h"
 #include "Camera\CameraManager.h"
-#include "D3D11Manager\ObjLoaderManager\ObjLoaderManager.h"
 #include "D3D11Manager\FBX\FBXLoaderManager.h"
 
 
-#pragma comment(lib,"d3dcompiler.lib")//shada
+#pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"DirectXTex.lib")
 #pragma comment(lib,"libfbxsdk-mt.lib")
 
@@ -77,7 +76,7 @@ const int& GameEngine::CameraCreate() {
 }
 void GameEngine::UpdateCamera(const int& handle) {
 	auto camera = _camerahandles.at(handle);
-	if (camera != nullptr) {//TODO: メインカメラとして作りたいが
+	if (camera != nullptr) {
 		camera->Update(_device);
 	}
 }
@@ -87,7 +86,6 @@ void GameEngine::UpdateCamera(const int& handle) {
 
 
 int GameEngine::LoadTexture(const std::wstring& filepath) {
-	//TODO: マテリアル以外の2D用として使いたい
 	return 1;
 }
 #pragma endregion
