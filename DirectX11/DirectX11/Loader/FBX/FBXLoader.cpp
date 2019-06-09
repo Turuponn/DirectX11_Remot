@@ -7,8 +7,6 @@
 using namespace std;
 using namespace DirectX;
 using namespace fbxsdk;
-//Note: 本のサンプルを使えるようにしただけ
-
 
 
 
@@ -26,7 +24,6 @@ FBXLoader::~FBXLoader() {
 }
 
 
-//	FBXデータ解放。 
 void FBXLoader::Releae()
 {
 	if (m_pFbxImporter)
@@ -49,7 +46,6 @@ void FBXLoader::Releae()
 } 
 void FBXLoader::TriangulateRecursive(FbxNode* _pNode, FbxScene* _pScene)
 {
-	//	ポリゴンの三角形化。
 	FbxNodeAttribute* pNodeAttribute = _pNode->GetNodeAttribute();
 
 	if (pNodeAttribute)
@@ -62,7 +58,6 @@ void FBXLoader::TriangulateRecursive(FbxNode* _pNode, FbxScene* _pScene)
 		{
 			FbxGeometryConverter lConverter(_pNode->GetFbxManager());
 			if (_traiangleCoolF == false) {
-				printf("FBX: モデルが三角形化メッシュになっていないのでロードが遅くなります。\n");
 				_traiangleCoolF = true;
 			}
 			lConverter.Triangulate(_pScene, true);
@@ -72,15 +67,12 @@ void FBXLoader::TriangulateRecursive(FbxNode* _pNode, FbxScene* _pScene)
 	const int lChildCount = _pNode->GetChildCount();
 	for (int lChildIndex = 0; lChildIndex < lChildCount; ++lChildIndex)
 	{
-		// 子ノードを探索。 
 		TriangulateRecursive(_pNode->GetChild(lChildIndex), _pScene);
 	}
 }
 
-//	FBX オブジェクトの 初期化。 
 bool FBXLoader::InitializeSdkObjects()
 {
-	// マネージャ作成。 
 	m_pFbxManager = FbxManager::Create();
 	if (!m_pFbxManager)
 	{
@@ -123,7 +115,7 @@ bool FBXLoader::Load(const std::string& _pName, std::shared_ptr<D3D11DeviceAndSw
 	{
 		return false;
 	}
-	//ファイル形式が合わない場合の処理
+	//ファイル形式が合わない場合
 	if (!m_pFbxManager->GetIOPluginRegistry()->DetectReaderFileFormat(_pName.c_str(), sFileFormat))
 	{
 		sFileFormat = m_pFbxManager->GetIOPluginRegistry()->FindReaderIDByDescription("FBX binary (*.fbx)");
@@ -134,40 +126,25 @@ bool FBXLoader::Load(const std::string& _pName, std::shared_ptr<D3D11DeviceAndSw
 		return false;
 	}
 
-	// FBX ファイルのバージョン取得。 
-	int major, minor, revision;
-	m_pFbxImporter->GetFileVersion(major, minor, revision);
-	FBXSDK_printf("FBX VERSION %d %d %d\n", major, minor, revision);
-
-	// 読み込んだFBXファイルからシーンデータを取り出す。 
 	if (!m_pFbxImporter->Import(m_pFbxScene))
 	{
-		FBXSDK_printf("Error: Unable to create FBX import!\n");
 		return false;
 	}
-
-	// 軸の設定。 
+	//DirectX用に軸を変換する
 	FbxAxisSystem OurAxisSystem = FbxAxisSystem::DirectX;
-
-	// DirectX系に変換。 
 	FbxAxisSystem SceneAxisSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
 	if (SceneAxisSystem != OurAxisSystem)
 	{
 		FbxAxisSystem::DirectX.ConvertScene(m_pFbxScene);
 	}
-
-	// 単位系の統一。 
+	// 単位系をセンチメーターに統一します
 	FbxSystemUnit SceneSystemUnit = m_pFbxScene->GetGlobalSettings().GetSystemUnit();
 	if (SceneSystemUnit.GetScaleFactor() != 1.0f)
 	{
-		// センチメーター単位にコンバートする。 
 		FbxSystemUnit::cm.ConvertScene(m_pFbxScene);
 	}
-
 	// 三角形化
 	TriangulateRecursive(m_pFbxScene->GetRootNode(), m_pFbxScene);
-
-
 	//頂点データ作成
 	LoadVertexData(device);
 
